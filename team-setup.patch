@@ -1,0 +1,81 @@
+diff --git a/.gitignore b/.gitignore
+index c7961f0..9dc7751 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -50,3 +50,5 @@ htmlcov/
+ .agent/
+ 
+ bracket_test_output.json
++coverage.xml
++.scannerwork/
+diff --git a/prompt.md b/docs/ai-prompts/01-kickoff-prompt.md
+similarity index 100%
+rename from prompt.md
+rename to docs/ai-prompts/01-kickoff-prompt.md
+diff --git a/docs/ai-prompts/README.md b/docs/ai-prompts/README.md
+new file mode 100644
+index 0000000..c6ce571
+--- /dev/null
++++ b/docs/ai-prompts/README.md
+@@ -0,0 +1,9 @@
++# AI prompts
++
++The brief (section 7) says to keep your prompts. Save them here, one file per AI session, named `NN-short-topic.md` (for example `02-sonarqube-setup.md`).
++
++Each file holds: the date, the tool, the prompt you sent (paste it as sent) and a one-line note of what you did with the answer. Link the file from the matching row in `docs/ai-use-record.md`.
++
++Do not edit a prompt after sending it. If you correct something, add a note below it.
++
++`01-kickoff-prompt.md` is the first prompt (moved from the repo root).
+diff --git a/docs/ai-use-record.md b/docs/ai-use-record.md
+new file mode 100644
+index 0000000..feb05ae
+--- /dev/null
++++ b/docs/ai-use-record.md
+@@ -0,0 +1,19 @@
++# AI-Use Record
++
++Course: SE3002 Software Quality Engineering, Final Project (Fall 2026)
++Rule (brief section 7): AI is allowed only if every output is checked and disclosed here (tool, purpose, output, what was checked or changed). Prompts are kept in `docs/ai-prompts/`.
++
++Rules for this file
++- One row per AI session or task. Add a row the same day, not at the end.
++- "Checked / changed" is written by the member who used the output, in their own words. Say what you ran or read yourself and what you rejected or edited. Leave it as TODO until it is true.
++- Do not edit or delete old rows. Add a correction row instead.
++
++| # | Date | Member | Tool | Purpose | Output received | Checked / changed by the member | Prompts file |
++|---|---|---|---|---|---|---|---|
++| 1 | 2026-11-19 | Yap | Claude (Sonnet 5.5) via Claude Code | Verify the draft test basis against the source code and run the app's registration behaviour to confirm suspected defects | `docs/test-basis.md` draft: verified requirements FR1-FR12, business rules, roles, findings F1-F8 and new findings N1-N4; pip-audit output (14 unique advisories) | TODO: record what you re-ran or re-read yourself (for example: re-ran the probes on Windows, opened `models.py` `can_register`, confirmed the 404 template line, edited or removed any row you could not explain) | `docs/ai-prompts/` |
++| 2 | 2026-11-20 | Yap | Claude (Sonnet 5.5) via Claude Code | Explain the project brief components and start-order; draft this AI-use record template | Roadmap of components and marks; this template; SonarQube setup steps | TODO | `docs/ai-prompts/` |
++
++## Things the AI output could not verify (so the member must)
++- Windows install, start and reset commands.
++- The `baseline` tag on the fork.
++- Any SonarQube, Lighthouse, ZAP or k6 result. None has been produced yet, so none may be cited until a member runs the tool.
+diff --git a/requirements-dev.txt b/requirements-dev.txt
+new file mode 100644
+index 0000000..e57e2f9
+--- /dev/null
++++ b/requirements-dev.txt
+@@ -0,0 +1,3 @@
++# Tools for our own testing work (not needed to run the app)
++-r requirements.txt
++pytest-cov>=5.0
+diff --git a/sonar-project.properties b/sonar-project.properties
+new file mode 100644
+index 0000000..5d86c6a
+--- /dev/null
++++ b/sonar-project.properties
+@@ -0,0 +1,12 @@
++# SonarQube / SonarCloud scanner configuration.
++# Set the project key (and organization, for SonarCloud) before the first scan.
++# Either uncomment and fill these in, or pass them on the command line with -D.
++#sonar.projectKey=REPLACE_ME
++#sonar.organization=REPLACE_ME
++
++sonar.projectName=scoreboard
++sonar.sources=app
++sonar.tests=tests
++sonar.python.version=3.12
++sonar.python.coverage.reportPaths=coverage.xml
++sonar.sourceEncoding=UTF-8
